@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ObraMagic | Marketplace de Materiais de Construção</title>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a class="brand" href="#" aria-label="ObraMagic início">
+        <span class="brand__mark">OM</span>
+        <span>
+          <strong>ObraMagic</strong>
+          <small>materiais, preços e fornecedores</small>
+        </span>
+      </a>
+
+      <nav class="main-nav" aria-label="Navegação principal">
+        <a href="#catalogo">Catálogo</a>
+        <a href="#fornecedores">Fornecedores</a>
+        <a href="#cotacao">Cotação</a>
+        <a href="#painel">Painel</a>
+      </nav>
+
+      <button class="icon-button cart-toggle" type="button" aria-label="Abrir cotação">
+        <span class="icon">🧾</span>
+        <span class="cart-count" data-cart-count>0</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero__content">
+        <p class="eyebrow">Marketplace para obras</p>
+        <h1>Compare o preço de materiais de construção</h1>
+        <p class="hero__text">Busque cimento, tijolo, aço, tubos e acabamentos, veja ofertas por loja e monte uma cotação rápida para sua obra.</p>
+
+        <form class="search-panel" id="searchForm">
+          <label class="search-panel__field" for="searchInput">
+            <span>Buscar material</span>
+            <input id="searchInput" type="search" placeholder="Ex.: cimento CP II, tijolo baiano, tubo PVC">
+          </label>
+
+          <label class="search-panel__field" for="regionSelect">
+            <span>Região</span>
+            <select id="regionSelect">
+              <option value="todas">Todas</option>
+              <option value="sudeste">Sudeste</option>
+              <option value="sul">Sul</option>
+              <option value="nordeste">Nordeste</option>
+            </select>
+          </label>
+
+          <button class="primary-button" type="submit">Pesquisar</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="market-strip" aria-label="Resumo do marketplace">
+      <article>
+        <strong data-total-materials>0</strong>
+        <span>materiais cadastrados</span>
+      </article>
+      <article>
+        <strong>124</strong>
+        <span>lojas parceiras</span>
+      </article>
+      <article>
+        <strong>18%</strong>
+        <span>economia média nas cotações</span>
+      </article>
+      <article>
+        <strong>24h</strong>
+        <span>resposta média dos fornecedores</span>
+      </article>
+    </section>
+
+    <section class="workspace" id="catalogo">
+      <aside class="filters" aria-label="Filtros do catálogo">
+        <div class="panel-heading">
+          <h2>Filtros</h2>
+          <button class="text-button" type="button" id="clearFilters">Limpar</button>
+        </div>
+
+        <div class="filter-group">
+          <span class="filter-title">Categoria</span>
+          <label><input type="checkbox" name="category" value="base"> Base e estrutura</label>
+          <label><input type="checkbox" name="category" value="hidraulica"> Hidráulica</label>
+          <label><input type="checkbox" name="category" value="eletrica"> Elétrica</label>
+          <label><input type="checkbox" name="category" value="acabamento"> Acabamento</label>
+        </div>
+
+        <div class="filter-group">
+          <span class="filter-title">Disponibilidade</span>
+          <label><input type="radio" name="stock" value="todos" checked> Todos</label>
+          <label><input type="radio" name="stock" value="pronta"> Pronta entrega</label>
+          <label><input type="radio" name="stock" value="retirada"> Retirada hoje</label>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-title" for="priceRange">Preço máximo</label>
+          <input id="priceRange" type="range" min="20" max="600" step="10" value="600">
+          <output id="priceOutput">Até R$ 600,00</output>
+        </div>
+      </aside>
+
+      <section class="catalog-panel">
+        <div class="catalog-toolbar">
+          <div>
+            <p class="eyebrow">Catálogo</p>
+            <h2>Materiais em destaque</h2>
+          </div>
+
+          <div class="toolbar-actions">
+            <select id="sortSelect" aria-label="Ordenar materiais">
+              <option value="relevance">Mais relevantes</option>
+              <option value="lowest">Menor preço</option>
+              <option value="highest">Maior preço</option>
+              <option value="rating">Melhor avaliação</option>
+            </select>
+            <button class="secondary-button" type="button" id="openRegister">Cadastrar material</button>
+          </div>
+        </div>
+
+        <div class="material-grid" id="materialGrid" aria-live="polite"></div>
+      </section>
+    </section>
+
+    <section class="content-band" id="fornecedores">
+      <div class="section-heading">
+        <p class="eyebrow">Fornecedores</p>
+        <h2>Lojas com melhor reputação</h2>
+      </div>
+
+      <div class="store-grid">
+        <article class="store-card">
+          <span class="store-badge">Top preço</span>
+          <h3>Constrular Atacado</h3>
+          <p>Foco em base, cimento e aço para obras médias.</p>
+          <strong>4,9 avaliação</strong>
+        </article>
+        <article class="store-card">
+          <span class="store-badge">Entrega rápida</span>
+          <h3>Rede HidroSul</h3>
+          <p>Tubos, conexões e metais com coleta no mesmo dia.</p>
+          <strong>4,8 avaliação</strong>
+        </article>
+        <article class="store-card">
+          <span class="store-badge">Acabamento</span>
+          <h3>Casa Pronta Pro</h3>
+          <p>Pisos, argamassas, tintas e itens de finalização.</p>
+          <strong>4,7 avaliação</strong>
+        </article>
+      </div>
+    </section>
+
+    <section class="quote-drawer" id="cotacao" aria-label="Resumo da cotação">
+      <div>
+        <p class="eyebrow">Cotação</p>
+        <h2>Sua lista de obra</h2>
+      </div>
+      <div class="quote-list" id="quoteList">
+        <p class="empty-state">Nenhum material adicionado ainda.</p>
+      </div>
+      <div class="quote-total">
+        <span>Total estimado</span>
+        <strong id="quoteTotal">R$ 0,00</strong>
+      </div>
+      <button class="primary-button wide" type="button">Enviar cotação para fornecedores</button>
+    </section>
+
+    <section class="dashboard-band" id="painel">
+      <div class="section-heading">
+        <p class="eyebrow">Painel</p>
+        <h2>Indicadores para comprar melhor</h2>
+      </div>
+      <div class="insight-grid">
+        <article>
+          <span class="trend trend--down">↓ 6%</span>
+          <h3>Cimento CP II</h3>
+          <p>Queda média na última semana em lojas do Sudeste.</p>
+        </article>
+        <article>
+          <span class="trend trend--up">↑ 4%</span>
+          <h3>Aço CA-50</h3>
+          <p>Alta por baixa disponibilidade em lotes grandes.</p>
+        </article>
+        <article>
+          <span class="trend trend--flat">= estável</span>
+          <h3>Tubos PVC</h3>
+          <p>Preço sem variações relevantes nas lojas monitoradas.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <dialog class="modal" id="registerModal">
+    <form method="dialog" class="modal__content" id="registerForm">
+      <div class="modal__header">
+        <div>
+          <p class="eyebrow">Cadastro</p>
+          <h2>Novo material</h2>
+        </div>
+        <button class="icon-button" type="button" id="closeRegister" aria-label="Fechar cadastro">×</button>
+      </div>
+
+      <label>
+        Nome do material
+        <input name="name" required placeholder="Ex.: Bloco estrutural 14x19x39">
+      </label>
+      <label>
+        Categoria
+        <select name="category" required>
+          <option value="base">Base e estrutura</option>
+          <option value="hidraulica">Hidráulica</option>
+          <option value="eletrica">Elétrica</option>
+          <option value="acabamento">Acabamento</option>
+        </select>
+      </label>
+      <label>
+        Menor preço
+        <input name="price" type="number" min="1" step="0.01" required placeholder="89.90">
+      </label>
+      <label>
+        Loja
+        <input name="store" required placeholder="Nome do fornecedor">
+      </label>
+      <button class="primary-button wide" type="submit">Adicionar ao catálogo</button>
+    </form>
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
+</html>
