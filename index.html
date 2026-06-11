@@ -37,7 +37,7 @@
       <div class="hero__content">
         <p class="eyebrow">Marketplace para obras</p>
         <h1>Compare o preço de materiais de construção</h1>
-        <p class="hero__text">Busque cimento, tijolo, aço, tubos e acabamentos, veja ofertas por loja e monte uma cotação rápida para sua obra.</p>
+        <p class="hero__text">Busque cimento, tijolo, aço, tubos e acabamentos nas melhores lojas de Curitiba e região, veja ofertas por loja e monte uma cotação rápida para sua obra.</p>
 
         <form class="search-panel" id="searchForm">
           <label class="search-panel__field" for="searchInput">
@@ -49,6 +49,7 @@
             <span>Região</span>
             <select id="regionSelect">
               <option value="todas">Todas</option>
+              <option value="curitiba" selected>Curitiba e Região</option>
               <option value="sudeste">Sudeste</option>
               <option value="sul">Sul</option>
               <option value="nordeste">Nordeste</option>
@@ -66,7 +67,7 @@
         <span>materiais cadastrados</span>
       </article>
       <article>
-        <strong>124</strong>
+        <strong data-total-stores>10</strong>
         <span>lojas parceiras</span>
       </article>
       <article>
@@ -92,6 +93,22 @@
           <label><input type="checkbox" name="category" value="hidraulica"> Hidráulica</label>
           <label><input type="checkbox" name="category" value="eletrica"> Elétrica</label>
           <label><input type="checkbox" name="category" value="acabamento"> Acabamento</label>
+          <label><input type="checkbox" name="category" value="ferramentas"> Ferramentas</label>
+          <label><input type="checkbox" name="category" value="impermeabilizacao"> Impermeabilização</label>
+        </div>
+
+        <div class="filter-group">
+          <span class="filter-title">Loja</span>
+          <label><input type="checkbox" name="store" value="leroy-merlin"> Leroy Merlin</label>
+          <label><input type="checkbox" name="store" value="cassol"> Cassol Centerlar</label>
+          <label><input type="checkbox" name="store" value="nichele"> Nichele Materiais</label>
+          <label><input type="checkbox" name="store" value="bigolin"> Bigolin Materiais</label>
+          <label><input type="checkbox" name="store" value="taruma"> Tarumã Materiais</label>
+          <label><input type="checkbox" name="store" value="zzat"> Zzat Full Materiais</label>
+          <label><input type="checkbox" name="store" value="olympic"> Olympic Building</label>
+          <label><input type="checkbox" name="store" value="buachack"> Buachack</label>
+          <label><input type="checkbox" name="store" value="dorigo"> Dorigo Materiais</label>
+          <label><input type="checkbox" name="store" value="casa-santos"> Casa Santos</label>
         </div>
 
         <div class="filter-group">
@@ -103,8 +120,16 @@
 
         <div class="filter-group">
           <label class="filter-title" for="priceRange">Preço máximo</label>
-          <input id="priceRange" type="range" min="20" max="600" step="10" value="600">
-          <output id="priceOutput">Até R$ 600,00</output>
+          <input id="priceRange" type="range" min="5" max="2000" step="5" value="2000">
+          <output id="priceOutput">Até R$ 2.000,00</output>
+        </div>
+
+        <div class="filter-group">
+          <span class="filter-title">Atualizar dados</span>
+          <button class="secondary-button wide" type="button" id="refreshData">
+            🔄 Buscar preços atualizados
+          </button>
+          <span class="last-update" data-last-update>Última atualização: há 2h</span>
         </div>
       </aside>
 
@@ -121,6 +146,7 @@
               <option value="lowest">Menor preço</option>
               <option value="highest">Maior preço</option>
               <option value="rating">Melhor avaliação</option>
+              <option value="store">Agrupar por loja</option>
             </select>
             <button class="secondary-button" type="button" id="openRegister">Cadastrar material</button>
           </div>
@@ -133,28 +159,31 @@
     <section class="content-band" id="fornecedores">
       <div class="section-heading">
         <p class="eyebrow">Fornecedores</p>
-        <h2>Lojas com melhor reputação</h2>
+        <h2>Lojas parceiras em Curitiba e Região</h2>
       </div>
 
-      <div class="store-grid">
-        <article class="store-card">
-          <span class="store-badge">Top preço</span>
-          <h3>Constrular Atacado</h3>
-          <p>Foco em base, cimento e aço para obras médias.</p>
-          <strong>4,9 avaliação</strong>
-        </article>
-        <article class="store-card">
-          <span class="store-badge">Entrega rápida</span>
-          <h3>Rede HidroSul</h3>
-          <p>Tubos, conexões e metais com coleta no mesmo dia.</p>
-          <strong>4,8 avaliação</strong>
-        </article>
-        <article class="store-card">
-          <span class="store-badge">Acabamento</span>
-          <h3>Casa Pronta Pro</h3>
-          <p>Pisos, argamassas, tintas e itens de finalização.</p>
-          <strong>4,7 avaliação</strong>
-        </article>
+      <div class="store-grid" id="storeGrid"></div>
+    </section>
+
+    <section class="price-comparison" id="comparador">
+      <div class="section-heading">
+        <p class="eyebrow">Comparador</p>
+        <h2>Compare preços entre lojas</h2>
+      </div>
+
+      <div class="comparison-table-wrapper">
+        <table class="comparison-table" id="comparisonTable">
+          <thead>
+            <tr>
+              <th>Material</th>
+              <th>Menor preço</th>
+              <th>Maior preço</th>
+              <th>Economia</th>
+              <th>Loja mais barata</th>
+            </tr>
+          </thead>
+          <tbody id="comparisonBody"></tbody>
+        </table>
       </div>
     </section>
 
@@ -170,7 +199,7 @@
         <span>Total estimado</span>
         <strong id="quoteTotal">R$ 0,00</strong>
       </div>
-      <button class="primary-button wide" type="button">Enviar cotação para fornecedores</button>
+      <button class="primary-button wide" type="button" id="sendQuote">Enviar cotação para fornecedores</button>
     </section>
 
     <section class="dashboard-band" id="painel">
@@ -182,7 +211,7 @@
         <article>
           <span class="trend trend--down">↓ 6%</span>
           <h3>Cimento CP II</h3>
-          <p>Queda média na última semana em lojas do Sudeste.</p>
+          <p>Queda média na última semana nas lojas de Curitiba.</p>
         </article>
         <article>
           <span class="trend trend--up">↑ 4%</span>
@@ -193,6 +222,11 @@
           <span class="trend trend--flat">= estável</span>
           <h3>Tubos PVC</h3>
           <p>Preço sem variações relevantes nas lojas monitoradas.</p>
+        </article>
+        <article>
+          <span class="trend trend--down">↓ 3%</span>
+          <h3>Tijolo Baiano</h3>
+          <p>Leve queda na Cassol e Nichele nesta semana.</p>
         </article>
       </div>
     </section>
@@ -219,15 +253,29 @@
           <option value="hidraulica">Hidráulica</option>
           <option value="eletrica">Elétrica</option>
           <option value="acabamento">Acabamento</option>
+          <option value="ferramentas">Ferramentas</option>
+          <option value="impermeabilizacao">Impermeabilização</option>
         </select>
       </label>
       <label>
-        Menor preço
+        Preço
         <input name="price" type="number" min="1" step="0.01" required placeholder="89.90">
       </label>
       <label>
         Loja
-        <input name="store" required placeholder="Nome do fornecedor">
+        <select name="store" required>
+          <option value="">Selecione a loja</option>
+          <option value="leroy-merlin">Leroy Merlin</option>
+          <option value="cassol">Cassol Centerlar</option>
+          <option value="nichele">Nichele Materiais</option>
+          <option value="bigolin">Bigolin Materiais</option>
+          <option value="taruma">Tarumã Materiais</option>
+          <option value="zzat">Zzat Full Materiais</option>
+          <option value="olympic">Olympic Building</option>
+          <option value="buachack">Buachack</option>
+          <option value="dorigo">Dorigo Materiais</option>
+          <option value="casa-santos">Casa Santos</option>
+        </select>
       </label>
       <button class="primary-button wide" type="submit">Adicionar ao catálogo</button>
     </form>
